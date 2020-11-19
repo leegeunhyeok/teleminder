@@ -1,5 +1,5 @@
 import { join } from 'path';
-import resolve from '@rollup/plugin-node-resolve';
+import json from '@rollup/plugin-json';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
 import license from 'rollup-plugin-license';
@@ -13,9 +13,7 @@ export default {
     },
   ],
   plugins: [
-    resolve({
-      preferBuiltins: true,
-    }),
+    json(),
     commonjs(),
     typescript(),
     license({
@@ -25,5 +23,5 @@ export default {
       },
     }),
   ],
-  external: ['fs'],
+  external: ['fs', 'arg', 'axios'],
 };
