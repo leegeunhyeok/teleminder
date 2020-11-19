@@ -41,6 +41,7 @@
     "typescript": "^4.0.5"
   },
   "dependencies": {
+    "arg": "^5.0.0",
     "axios": "^0.21.0"
   }
 }
