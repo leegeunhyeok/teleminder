@@ -25,12 +25,24 @@ telenoty --regist {BOT_TOKEN} {CHAT_ID}
 telenoty --message {MESSAGE}
 ```
 
+- More usage
+  - with [Python](#with-python)
+  - with [Node](#with-node.js)
+
 ## Bot
 
 1. Create Telegram bot
 2. Get access token
 3. Get chat id
 4. Regist to Telenoty! - [Go](#usage)
+
+## with Python
+
+WIP
+
+## with Node.js
+
+WIP
 
 ## License
 
