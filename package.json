@@ -1,0 +1,46 @@
+{
+  "name": "telenoty",
+  "version": "0.1.0",
+  "description": "Simple and Easy to emit notification via Telegram",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run build && npm install -g && ec",
+    "build": "rollup --config build/rollup.config.ts"
+  },
+  "bin": {
+    "telenoty": "./dist/telenoty.js"
+  },
+  "engines": {
+    "node": ">=10.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leegeunhyeok/telenoty.git"
+  },
+  "author": "Geunhyeok LEE <dev.ghlee@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/leegeunhyeok/telenoty/issues"
+  },
+  "homepage": "https://github.com/leegeunhyeok/telenoty#readme",
+  "keywords": [
+    "message",
+    "notification",
+    "telegram",
+    "cli"
+  ],
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^16.0.0",
+    "@rollup/plugin-node-resolve": "^10.0.0",
+    "@rollup/plugin-typescript": "^6.1.0",
+    "@typescript-eslint/eslint-plugin": "^4.8.1",
+    "@typescript-eslint/parser": "^4.8.1",
+    "eslint": "^7.13.0",
+    "rollup": "^2.33.3",
+    "rollup-plugin-license": "^2.2.0",
+    "typescript": "^4.0.5"
+  },
+  "dependencies": {
+    "axios": "^0.21.0"
+  }
+}
