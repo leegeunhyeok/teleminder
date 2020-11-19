@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import fs from 'fs';
 import arg from 'arg';
 import axios from 'axios';
@@ -18,16 +19,11 @@ class Telenoty {
   private _bot: BotRegistration = null;
   private _debug = false;
 
-  constructor(debug: boolean = false) {
+  constructor(debug = false) {
     this._debug = debug;
   }
 
-  private createConfig() {
-    fs.writeFileSync(Telenoty.CONFIG_PATH, JSON.stringify(DefaultBotRegistration, null, 2));
-    this._bot = DefaultBotRegistration;
-  }
-
-  async loadConfig() {
+  loadConfig() {
     return new Promise((resolve) => {
       fs.readFile(Telenoty.CONFIG_PATH, 'utf-8', (err, data) => {
         try {
@@ -40,17 +36,27 @@ class Telenoty {
     });
   }
 
-  setBot(token: string, chatId: string) {
-    this._bot = { token, chatId };
-    return this;
+  private createConfig(botRegistration: BotRegistration = DefaultBotRegistration) {
+    fs.writeFileSync(Telenoty.CONFIG_PATH, JSON.stringify(botRegistration, null, 2));
+    this._bot = botRegistration;
+  }
+
+  registration(token, chatId) {
+    if (token && chatId) {
+      this.createConfig({ token, chatId });
+    } else {
+      throw new Error('token or chat id not provided');
+    }
   }
 
   async sendMessage(message: string) {
     const { token, chatId } = this._bot;
     if (token && chatId) {
-      axios.get(
-        `https://api.telegram.org/bot${token}/sendmessage?chat_id=${chatId}&text=${message}`,
-      );
+      await axios
+        .get(`https://api.telegram.org/bot${token}/sendmessage?chat_id=${chatId}&text=${message}`)
+        .catch((e) => {
+          throw e.response.status ? new Error('bot or chat not found') : e;
+        });
     } else {
       throw new Error('token or chat id not provided');
     }
@@ -67,20 +73,32 @@ if (isCli) {
       '--message': String,
       '--debug': Boolean,
       // Simplify flags
-      '-r': Boolean,
-      '-m': String,
+      '-r': '--regist',
+      '-m': '--message',
     });
 
     (async () => {
       const instance = new Telenoty(args['--debug']);
       await instance.loadConfig();
 
+      // Regist
       if (args['--regist']) {
-        // TODO: Regist telegram bot
-      } else if (args['--message']) {
-        // TODO: Request message to bot
+        const [token, chatId] = [...args._, undefined, undefined];
+        instance.registration(token, chatId);
+        return 'bot registered';
+      } else if (args['--message'] !== undefined) {
+        // Send message
+        const message = args['--message'];
+        if (message) {
+          await instance.sendMessage(message);
+          return 'ok';
+        } else {
+          throw new Error('empty message not allowed');
+        }
       }
-    })();
+    })()
+      .then((res) => console.log('telenoty:', res))
+      .catch((e) => console.error('telenoty:', e.message));
   } catch (e) {
     if (e.code === 'ARG_UNKNOWN_OPTION') {
       console.error('telenoty: unknown option');
