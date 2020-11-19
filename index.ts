@@ -14,6 +14,7 @@ const DefaultBotRegistration: BotRegistration = {
   token: '',
   chatId: '',
 };
+
 class Telenoty {
   private static CONFIG_PATH = process.env.HOME + '/.telenoty';
   private _bot: BotRegistration = null;
