@@ -72,9 +72,11 @@ if (isCli) {
       '--regist': Boolean,
       '--message': String,
       '--debug': Boolean,
+      '--help': Boolean,
       // Simplify flags
       '-r': '--regist',
       '-m': '--message',
+      '-h': '--help',
     });
 
     (async () => {
@@ -95,6 +97,16 @@ if (isCli) {
         } else {
           throw new Error('empty message not allowed');
         }
+      } else {
+        return [
+          'Usage',
+          '  telenoty [options]',
+          '',
+          'Options',
+          '  -r, --regist {token} {chatId}    bot registration (create or override)',
+          '  -m, --message {message}          message to send',
+          '  --debug                          enable debug mode',
+        ].join('\n');
       }
     })()
       .then((res) => console.log('telenoty:', res))
