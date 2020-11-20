@@ -70,7 +70,8 @@ telenoty --message {MESSAGE}
 import subprocess
 
 def send_message(message):
-    return subprocess.call(['telenoty', '-m2', message], stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
+    return subprocess.call(['telenoty', '--message', message], \
+        stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
 
 result = send_message('test')
 if result == 0:
