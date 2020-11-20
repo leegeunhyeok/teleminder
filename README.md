@@ -2,6 +2,9 @@
 
 📢 Simple and Easy to emit notification via Telegram
 
+[![npm version](https://badge.fury.io/js/telenoty.svg)](https://www.npmjs.com/package/telenoty)
+![ts](https://badgen.net/badge/-/TypeScript/blue?icon=typescript&label)
+
 ## Installation
 
 ```bash
@@ -78,6 +81,19 @@ if result == 0:
   print('success')
 else:
   print('fail')
+```
+
+## Devlopment
+
+```bash
+# Install dependencies
+npm i
+
+# Build for production
+npm run build
+
+# Test
+node dist/telenoty.js
 ```
 
 ## License
