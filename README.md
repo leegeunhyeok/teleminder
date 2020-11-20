@@ -10,10 +10,11 @@ npm install -g telenoty
 
 ## Usage
 
-- Required [Bot](#bot)
+- Required - [Telegram Bot](#craete-bot)
   - Create your Telegram bot
   - Get access token
   - Get chat id
+  - Regist and enjoy!
 
 ```bash
 # Regist bot information (save on ~/.telenoty)
@@ -25,24 +26,58 @@ telenoty --regist {BOT_TOKEN} {CHAT_ID}
 telenoty --message {MESSAGE}
 ```
 
+<img src="docs/usage_1.jpg">
+<img src="docs/usage_2.jpg">
+<img src="docs/usage_3.jpg">
+
 - More usage
   - with [Python](#with-python)
-  - with [Node](#with-node.js)
 
-## Bot
+## Create bot
 
 1. Create Telegram bot
+
+   - [@BotFather](https://telegram.me/botfather)
+
+    <img src="docs/bot_1.jpg">
+
 2. Get access token
+
+   - Send bot name and ID
+   - Copy access token (for registration)
+   - Go to chat room
+
+    <img src="docs/bot_2.jpg">
+
 3. Get chat id
-4. Regist to Telenoty! - [Go](#usage)
+
+   - Send any message
+
+    <img src="docs/bot_3.jpg">
+
+   - and go to [https://api.telegram.org/bot{ACCESS_TOKEN}/getUpdates](https://api.telegram.org/botYOUR_TOKEN/getUpdates)
+
+    <img src="docs/bot_4.jpg">
+
+   - Copy chat id
+
+4. Regist and enjoy!
+   - [Go](#usage)
 
 ## with Python
 
-WIP
+```python
+import subprocess
 
-## with Node.js
+def send_message(message):
+    return subprocess.call(['telenoty', '-m2', message], stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
 
-WIP
+result = send_message('test')
+if result == 0:
+  print('success')
+else:
+  print('fail')
+```
 
 ## License
 
