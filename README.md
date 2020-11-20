@@ -1,9 +1,14 @@
+<div align="center">
+
 # telenoty
 
-📢 Simple and Easy to emit notification via Telegram
+<img src="photo.png" width="300">
 
+📢Simple and Easy to emit notification via Telegram  
 [![npm version](https://badge.fury.io/js/telenoty.svg)](https://www.npmjs.com/package/telenoty)
 ![ts](https://badgen.net/badge/-/TypeScript/blue?icon=typescript&label)
+
+</div>
 
 ## Installation
 
