@@ -3,7 +3,7 @@ import fs from 'fs';
 import arg from 'arg';
 import axios from 'axios';
 
-const isCli = require.main === module;
+const isCLI = require.main === module;
 
 interface BotRegistration {
   token: string;
@@ -64,11 +64,9 @@ class Telenoty {
   }
 }
 
-export { Telenoty };
-
 // is CLI?
-if (isCli) {
-  try {
+if (isCLI) {
+  (async () => {
     const args = arg({
       '--regist': Boolean,
       '--message': String,
@@ -80,43 +78,37 @@ if (isCli) {
       '-h': '--help',
     });
 
-    (async () => {
-      const instance = new Telenoty(args['--debug']);
-      await instance.loadConfig();
+    const instance = new Telenoty(args['--debug']);
+    await instance.loadConfig();
 
-      // Regist
-      if (args['--regist']) {
-        const [token, chatId] = [...args._, undefined, undefined];
-        instance.registration(token, chatId);
-        return 'bot registered';
-      } else if (args['--message'] !== undefined) {
-        // Send message
-        const message = args['--message'];
-        if (message) {
-          await instance.sendMessage(message);
-          return 'ok';
-        } else {
-          throw new Error('empty message not allowed');
-        }
+    // Regist
+    if (args['--regist']) {
+      const [token, chatId] = [...args._, undefined, undefined];
+      instance.registration(token, chatId);
+      return 'bot registered';
+    } else if (args['--message'] !== undefined) {
+      // Send message
+      const message = args['--message'];
+      if (message) {
+        await instance.sendMessage(message);
+        return 'ok';
       } else {
-        return [
-          'Usage',
-          '  telenoty [options]',
-          '',
-          'Options',
-          '  -r, --regist {token} {chatId}    bot registration (create or override)',
-          '  -m, --message {message}          message to send',
-          '  --debug                          enable debug mode',
-        ].join('\n');
+        throw new Error('empty message not allowed');
       }
-    })()
-      .then((res) => console.log('telenoty:', res))
-      .catch((e) => console.error('telenoty:', e.message));
-  } catch (e) {
-    if (e.code === 'ARG_UNKNOWN_OPTION') {
-      console.error('telenoty: unknown option');
     } else {
-      console.error('');
+      return [
+        '',
+        '',
+        'Usage',
+        '  telenoty [options]',
+        '',
+        'Options',
+        '  -r, --regist {token} {chatId}    bot registration (create or override)',
+        '  -m, --message {message}          message to send',
+        '  --debug                          enable debug mode',
+      ].join('\n');
     }
-  }
+  })()
+    .then((res) => void console.log('telenoty:', res) || process.exit(0))
+    .catch((e) => void console.error('telenoty:', e.message) || process.exit(1));
 }
