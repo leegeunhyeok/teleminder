@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 import fs from 'fs';
 import arg from 'arg';
 import axios from 'axios';
@@ -16,6 +15,7 @@ const DefaultBotRegistration: BotRegistration = {
 };
 
 class Telenoty {
+  // telenoty configuration file path (~/.telenoty)
   private static CONFIG_PATH = process.env.HOME + '/.telenoty';
   private _bot: BotRegistration = null;
   private _debug = false;
@@ -24,24 +24,35 @@ class Telenoty {
     this._debug = debug;
   }
 
+  /**
+   * Load telenoty config from CONFIG_PATH
+   */
   loadConfig() {
     return new Promise((resolve) => {
       fs.readFile(Telenoty.CONFIG_PATH, 'utf-8', (err, data) => {
         try {
           err ? this.createConfig() : (this._bot = JSON.parse(data)) && resolve();
         } catch (e) {
-          console.log(this._debug);
           this._debug && console.error(e);
         }
       });
     });
   }
 
+  /**
+   * Write new config or override them
+   * @param botRegistration Save data
+   */
   private createConfig(botRegistration: BotRegistration = DefaultBotRegistration) {
     fs.writeFileSync(Telenoty.CONFIG_PATH, JSON.stringify(botRegistration, null, 2));
     this._bot = botRegistration;
   }
 
+  /**
+   * Regist telegram bot
+   * @param token bot access token
+   * @param chatId chat id
+   */
   registration(token, chatId) {
     if (token && chatId) {
       this.createConfig({ token, chatId });
@@ -50,13 +61,17 @@ class Telenoty {
     }
   }
 
+  /**
+   * Send message to registed bot
+   * @param message message to send
+   */
   async sendMessage(message: string) {
     const { token, chatId } = this._bot;
     if (token && chatId) {
       await axios
         .get(`https://api.telegram.org/bot${token}/sendmessage?chat_id=${chatId}&text=${message}`)
         .catch((e) => {
-          throw e.response.status ? new Error('bot or chat not found') : e;
+          throw e.response.status === 404 ? new Error('bot or chat not found') : e;
         });
     } else {
       throw new Error('token or chat id not provided');
